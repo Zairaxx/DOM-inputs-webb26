@@ -1,40 +1,53 @@
-let input = document.querySelector("#new-todo")
-let addTodoBtn = document.querySelector("#addTodo");
-let todoList = document.querySelector("#todo-list")
+let carList = document.querySelector("#car-list");
 
-let todos = [];
+let checkboxes = document.querySelectorAll("[type=checkbox]")
 
-let renderTodos = (todoArray) => {
-    //Rendera todo-listan
-    todoList.innerHTML = "";
-    todoArray.forEach((todo,index) => {
-            let todoItem = document.createElement("li");
-            todoItem.classList.add("todo-item");
-            todoItem.innerText = `#${index} - ${todo}`
+let cars = [{
+    brand: "Volvo",
+    year: 2025,
+    color: "Blue"
+}, {
+    brand: "Ferrari",
+    year: 1994,
+    color: "Black"
+}, {
+    brand: "Audi",
+    year: 2024,
+    color: "Silver"
+}]
 
-            //Delete-btn
-            let deleteBtn = document.createElement("button");
-            deleteBtn.innerText = "Ta bort";
-            deleteBtn.addEventListener("click", () => { deleteTodo(index) });
+//Rendera bilar
 
-            todoItem.append(deleteBtn);
+let renderCars = (arr) => {
 
-            todoList.append(todoItem);
-    })
+    carList.innerHTML = "";
+
+    arr.forEach(car => {
+        let carItem = document.createElement("li");
+        carItem.classList.add("car-item")
+        carItem.innerHTML = `
+    <p><strong>Modell:</strong>${car.brand}</p>
+    <p><strong>Årsmodell:</strong>${car.year}</p>
+    <p><strong>Färg:</strong>${car.color}</p>
+    `
+        carList.append(carItem);
+    });
 }
 
-let addTodo = () => {
-    if(todos.length < 5){
-        todos.push(input.value);
-        renderTodos(todos);
-} else {
-    alert("Too many todos.")
-}
+let filterCars = () => {
+    //Hitta icheckade färger
+    let chosenColors = [];
+
+    let checkedBoxes = document.querySelectorAll("[type=checkbox]:checked")
+    checkedBoxes.forEach(box => chosenColors.push(box.value))
+
+    //Filtrera baserat på om de finns i chosenColors
+
+    let filteredCars = cars.filter(car => chosenColors.includes(car.color))
+    renderCars(filteredCars);
 }
 
-let deleteTodo = (todoIndex) => {
-    todos = todos.filter((todo , index) => index !== todoIndex);
-    renderTodos(todos);
-};
+renderCars(cars);
 
-addTodoBtn.addEventListener("click", addTodo);
+checkboxes.forEach(box => box.addEventListener("change", filterCars))
+
