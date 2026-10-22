@@ -1,6 +1,8 @@
-.box {
-    height:150px;
-    width:150px;
-    background:lightcoral;
+.todo-item {
+    list-style: none;
     border:2px solid black;
+    background:lightskyblue;
+    display:flex;
+    justify-content: space-between;
+    padding:8px;
 }

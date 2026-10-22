@@ -1,28 +1,40 @@
-let nameInput = document.querySelector("#namn")
-let btn = document.querySelector("#greet");
-let greetingDiv = document.querySelector("#greeting");
+let input = document.querySelector("#new-todo")
+let addTodoBtn = document.querySelector("#addTodo");
+let todoList = document.querySelector("#todo-list")
 
-btn.addEventListener("click", () => {
-    let div = document.createElement("div");
-    div.classList.add("box")
-    
-    let h2 = document.createElement("h2");
-    h2.innerText = `Välkommen ${nameInput.value} !`
+let todos = [];
 
-    greetingDiv.append(div);
-    
-    
-    //Delete-btn
-    let deleteBtn = document.createElement("button");
-    deleteBtn.innerText = "Delete";
-    
-    div.append(h2, deleteBtn);
-    
-    deleteBtn.addEventListener("click", (event) => {
-        //Ta bort div
-        //DOM Traversal
-        console.log(event.target.nextElementSibling);
+let renderTodos = (todoArray) => {
+    //Rendera todo-listan
+    todoList.innerHTML = "";
+    todoArray.forEach((todo,index) => {
+            let todoItem = document.createElement("li");
+            todoItem.classList.add("todo-item");
+            todoItem.innerText = `#${index} - ${todo}`
 
+            //Delete-btn
+            let deleteBtn = document.createElement("button");
+            deleteBtn.innerText = "Ta bort";
+            deleteBtn.addEventListener("click", () => { deleteTodo(index) });
+
+            todoItem.append(deleteBtn);
+
+            todoList.append(todoItem);
     })
+}
 
-})
+let addTodo = () => {
+    if(todos.length < 5){
+        todos.push(input.value);
+        renderTodos(todos);
+} else {
+    alert("Too many todos.")
+}
+}
+
+let deleteTodo = (todoIndex) => {
+    todos = todos.filter((todo , index) => index !== todoIndex);
+    renderTodos(todos);
+};
+
+addTodoBtn.addEventListener("click", addTodo);
